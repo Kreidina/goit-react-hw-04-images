@@ -6,10 +6,10 @@ import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
 export const ImageGallery = ({ images, onClick }) => {
   return (
     <ul className={css.gallery} onClick={onClick}>
-      {images.map((image, index) => {
+      {images.map(image => {
         return (
           <ImageGalleryItem
-            key={index}
+            key={image.id}
             webformatURL={image.webformatURL}
             tags={image.tags}
           />

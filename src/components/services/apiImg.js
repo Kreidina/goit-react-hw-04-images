@@ -8,7 +8,7 @@ async function fetchPictures(name, page) {
     const response = await axios.get(`&per_page=12&page=${page}&q=${name}`);
     return response.data;
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
   }
 }
 

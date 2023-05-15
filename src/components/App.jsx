@@ -17,7 +17,7 @@ export const App = () => {
   const [showModal, setShowModal] = useState(false);
   const [largeImg, setLargeImg] = useState([]);
   const [total, setTotal] = useState(0);
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const onFormSubmit = imgName => {
     setQuery(imgName);
@@ -30,25 +30,25 @@ export const App = () => {
     if (query === '') {
       return;
     }
-    try {
-      setIsLoading(true);
-      const pictures = picturesApi.fetchPictures(query, page);
-      pictures.then(picture => {
+    setIsLoading(true);
+
+    const pictures = picturesApi.fetchPictures(query, page);
+    pictures
+      .then(picture => {
         if (picture.totalHits === 0) {
           return toast.info(
             `Nothing was found for ${query}. Try something else`
           );
         }
-        setImages(prevState => [...prevState, ...picture.hits]);
+        setImages(prev => [...prev, ...picture.hits]);
         setTotal(picture.totalHits);
-      });
-    } catch (error) {
-      setErrorMessage(error.message);
-      console.log(errorMessage);
-      return toast.error('An error occurred on the server. Try again later');
-    } finally {
-      setIsLoading(false);
-    }
+      })
+      .catch(error => {
+        setErrorMessage(error.message);
+        console.log(errorMessage);
+        return toast.error('An error occurred on the server. Try again later');
+      })
+      .finally(setIsLoading(false));
   }, [query, page, errorMessage]);
 
   const clickLearnMore = () => {

@@ -7,21 +7,18 @@ const modalRoot = document.querySelector('#modal-root');
 
 export const Modal = ({ onClose, children }) => {
   useEffect(() => {
+    const onEscKeyPress = e => {
+      if (e.code === 'Escape') {
+        onClose();
+      }
+    };
+
     window.addEventListener('keydown', onEscKeyPress);
-  });
-  //    componentDidMount() {
-  //     window.addEventListener('keydown', this.onEscKeyPress);
-  //   }
+    return () => {
+      window.removeEventListener('keydown', onEscKeyPress);
+    };
+  }, [onClose]);
 
-  //   componentWillUnmount = () => {
-  //     window.removeEventListener('keydown', this.onEscKeyPress);
-  //   };
-
-  const onEscKeyPress = e => {
-    if (e.code === 'Escape') {
-      onClose();
-    }
-  };
   const onBackdropClose = e => {
     if (e.currentTarget === e.target) {
       onClose();
